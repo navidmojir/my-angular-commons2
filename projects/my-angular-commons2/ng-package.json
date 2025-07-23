@@ -3,5 +3,7 @@
   "dest": "../../dist/my-angular-commons2",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+   
+  },
+  "allowedNonPeerDependencies": ["@angular/material"]
 }

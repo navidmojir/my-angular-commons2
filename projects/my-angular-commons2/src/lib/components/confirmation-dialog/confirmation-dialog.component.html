@@ -1,0 +1,6 @@
+<h3 style="text-align:right" mat-dialog-title>{{title}}</h3>
+<div mat-dialog-content><p dir="rtl">{{confirmMessage}}</p></div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="dialogRef.close(true)">تایید</button>
+  <button *ngIf="showCancelButton" mat-raised-button (click)="dialogRef.close(false)">انصراف</button>
+</div>

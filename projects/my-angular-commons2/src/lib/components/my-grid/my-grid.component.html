@@ -1,0 +1,49 @@
+<div [dir]="params.rtl ? 'rtl' : 'ltr'" >    
+  <div class="toolbar" *ngIf="params.showToolbar">
+      <button mat-raised-button  
+          (click)="reload()">{{params.labels.refresh}}</button>            
+
+      <ng-container *ngFor="let customAction of params.customGeneralActions">
+          <button mat-raised-button  
+              (click)="customAction.onClick()">{{customAction.title}}</button>
+      </ng-container>
+  </div>
+
+  <mat-divider></mat-divider>
+      
+  <table mat-table matSort (matSortChange)="applySorting($event)" [matSortActive]="sort.active" [matSortDirection]="sort.direction" [dataSource]="entities" >
+      <ng-container *ngFor="let fc of params.fieldConfigs">   
+          <ng-container matColumnDef="{{fc.name}}">
+              <mat-header-cell *matHeaderCellDef [mat-sort-header]="fc.name" [disabled]="fc.sortHeader ? false : true">{{fc.displayText}}</mat-header-cell>
+              <mat-cell [ngStyle]="fc.style(get(element, fc))" *matCellDef="let element">{{fc.valueTransformer(get(element, fc))}}</mat-cell>
+          </ng-container>
+      </ng-container>
+
+      <ng-container matColumnDef="operations" stickyEnd>
+          <mat-header-cell *matHeaderCellDef>{{params.labels.operations}}</mat-header-cell>
+          <mat-cell class="record-operations" *matCellDef="let element">
+              <button mat-raised-button *ngIf="showDetailsButton"
+                  (click)="showDetails(element.id)">{{params.labels.details}}</button>
+
+              <button mat-icon-button *ngIf="showDeleteButton" 
+                  (click)="delete(element.id)" matTooltip="{{params.labels.delete}}"><mat-icon>delete</mat-icon></button>
+
+              <ng-container *ngFor="let customAction of params.customRecordActions">
+                  <button mat-raised-button  *ngIf="!customAction.icon"
+                      (click)="customAction.onClick(element)">{{customAction.title}}</button>
+                  <button mat-icon-button  *ngIf="customAction.icon" matTooltip="{{customAction.title}}"
+                      (click)="customAction.onClick(element)"><mat-icon>{{customAction.icon}}</mat-icon></button>
+              </ng-container>
+          </mat-cell>
+      </ng-container>
+      
+      <mat-header-row *matHeaderRowDef="displayedCols"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedCols;"></mat-row>
+
+      
+
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons 
+          (page)="applyPaging($event)" [pageIndex]="paging.pageNumber" [pageSize]="paging.pageSize"></mat-paginator>
+</div>

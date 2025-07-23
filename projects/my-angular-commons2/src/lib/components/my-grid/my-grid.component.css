@@ -1,0 +1,15 @@
+table {
+    width: 100%;
+}
+
+.toolbar {
+    padding: 10px;
+}
+
+.toolbar button {
+    margin-left: 10px;
+}
+
+.record-operations button{
+    margin-left: 10px;
+}
