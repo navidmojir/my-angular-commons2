@@ -3,5 +3,31 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "my-angular-commons2": {
+      "projectType": "library",
+      "root": "projects/my-angular-commons2",
+      "sourceRoot": "projects/my-angular-commons2/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/my-angular-commons2/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/my-angular-commons2/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/my-angular-commons2/tsconfig.spec.json"
+          }
+        }
+      }
+    }
   }
 }
