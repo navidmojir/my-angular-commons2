@@ -51,6 +51,7 @@
               }
             ],
             "styles": [
+              "projects/test-app/src/custom-theme.scss",
               "projects/test-app/src/styles.css"
             ]
           },

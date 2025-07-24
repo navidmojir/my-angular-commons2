@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { CrudParams } from '../../dtos/crud-params';
@@ -13,7 +13,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 import { MatSortModule } from '@angular/material/sort';
 import {MatDividerModule} from '@angular/material/divider';
-import { HttpClientModule } from '@angular/common/http';
+import { MatButtonModule } from '@angular/material/button';
+import { getPersianPaginatorIntl } from '../../utils/persian-paginator-intl';
+// import { HttpClientModule } from '@angular/common/http';
 
 
 @Component({
@@ -25,8 +27,10 @@ import { HttpClientModule } from '@angular/common/http';
     MatTooltipModule,
     MatSortModule,
     MatDividerModule,
-    HttpClientModule
-
+    MatButtonModule
+  ],
+  providers: [
+    { provide: MatPaginatorIntl, useValue: getPersianPaginatorIntl()}
   ],
   selector: 'lib-my-grid',
   templateUrl: './my-grid.component.html',

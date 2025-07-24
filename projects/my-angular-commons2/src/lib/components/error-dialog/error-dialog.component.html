@@ -1,0 +1,12 @@
+<div style="width: 500px;">
+    <h3 style="text-align:right; color: #a62d25" mat-dialog-title>خطا در انجام عملیات <mat-icon>warning</mat-icon></h3>
+    <div mat-dialog-content>
+        <p dir="rtl">{{error.message}}</p>
+        <mat-divider></mat-divider>
+        <button style="float: right; margin: 10px;" mat-stroked-button (click)="setShowDetails(true)">نمایش جزئیات خطا</button>
+        <p style="padding: 20px; margin-top: 40px;" *ngIf="showDetails">{{error.details}}</p>
+    </div>
+    <div mat-dialog-actions>
+    <button mat-raised-button (click)="dialogRef.close(false)">بستن</button>
+    </div>
+</div>
