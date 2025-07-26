@@ -5,9 +5,9 @@ export class FieldConfig {
     name = "";
     displayText = "";
     // type: FieldType = FieldType.TEXT;
-    showOnList: boolean = false;
+    showOnList: boolean = true;
     validators: ValidatorFn[] = [];
-    sortHeader: boolean = false;
+    sortHeader: boolean = true;
     values: any[] = [];
     valueTransformer = (value: any) => { return value };
     style = (value: any) => {return {}};

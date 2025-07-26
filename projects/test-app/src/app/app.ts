@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterOutlet } from '@angular/router';
-import { MyGridComponent, CrudParams } from 'my-angular-commons2';
+import { MyGridComponent, CrudParams, FieldConfig} from 'my-angular-commons2';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +15,13 @@ export class App implements OnInit {
   gridParams: CrudParams = new CrudParams();
 
   ngOnInit() {
-    // this.gridParams
+    this.gridParams.baseUrl = "http://localhost:8081/";
+    this.gridParams.resourceName = "tickets";
+    
+    let idCol = new FieldConfig();
+    idCol.name = 'id';
+    idCol.displayText = 'شناسه';
+
+    this.gridParams.fieldConfigs.push(idCol);
   }
 }
