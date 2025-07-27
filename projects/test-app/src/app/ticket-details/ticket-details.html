@@ -1,0 +1,7 @@
+<button mat-raised-button color="accent" (click)="submit()">ثبت</button>
+<form [formGroup]="form">
+    <mat-form-field>
+        <textarea formControlName="text" matInput placeholder="متن" maxlength="1024"></textarea>
+        <mat-error *ngIf="text.invalid && text.errors?.['pattern']">{{patternErrorMsg}}</mat-error>
+    </mat-form-field>
+</form>
