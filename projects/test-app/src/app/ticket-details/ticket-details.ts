@@ -7,6 +7,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatError, MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
+import { TicketService } from '../services/ticket-service';
 
 @Component({
   selector: 'app-ticket-details',
@@ -17,14 +18,17 @@ import { MatButton } from '@angular/material/button';
   styleUrl: './ticket-details.css'
 })
 export class TicketDetails implements OnInit {
-  private pageMode: PageMode = PageMode.VIEW;
+  PageMode = PageMode;
+  pageMode: PageMode = PageMode.VIEW;
   id: number = 0;
   gridCols = 4;
   gridRowHeight = "3:1";
   gridGutterSize = "30px";
   patternErrorMsg = 'کاراکتر غیرمجاز';
 
-  constructor(private route: ActivatedRoute){
+  constructor(private route: ActivatedRoute,
+    private ticketService: TicketService
+  ){
   }
 
   form = new UntypedFormGroup({
@@ -42,6 +46,7 @@ export class TicketDetails implements OnInit {
   }
 
   submit() {
-    console.log(this.form.value);
+    // alert(JSON.stringify(this.form.value));
+    this.ticketService.create(this.form.value).subscribe((result) => console.log(result));
   }
 }

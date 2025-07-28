@@ -16,7 +16,7 @@ gridParams: CrudParams = new CrudParams();
   }
 
   ngOnInit() {
-    this.gridParams.baseUrl = "http://localhost:8081/";
+    this.gridParams.baseUrl = "http://localhost:8081";
     this.gridParams.resourceName = "tickets";
     
     
@@ -24,6 +24,11 @@ gridParams: CrudParams = new CrudParams();
     idCol.name = 'id';
     idCol.displayText = 'شناسه';
     this.gridParams.fieldConfigs.push(idCol);
+
+    let textCol = new FieldConfig();
+    textCol.name = 'text';
+    textCol.displayText = 'متن تیکت';
+    this.gridParams.fieldConfigs.push(textCol);
 
     let createAction = new CustomAction();
     createAction.title = "ایجاد تیکت جدید";

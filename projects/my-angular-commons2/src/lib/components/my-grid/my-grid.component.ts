@@ -6,7 +6,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { CrudParams } from '../../dtos/crud-params';
 // import { Operation } from '../enums/operations';
 // import { PanelType } from '../enums/panel-type';
-import { DataService } from '../../services/data-service/data.service';
+// import { DataService } from '../../services/data-service/data.service';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
@@ -15,6 +15,7 @@ import { MatSortModule } from '@angular/material/sort';
 import {MatDividerModule} from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { getPersianPaginatorIntl } from '../../utils/persian-paginator-intl';
+import { BaseService } from '../../services/base-service/base.service';
 // import { HttpClientModule } from '@angular/common/http';
 
 
@@ -71,7 +72,7 @@ export class MyGridComponent implements OnInit {
 
   sort: any;
 
-  constructor(private dataService: DataService,
+  constructor(private baseService: BaseService,
     public dialog: MatDialog,
     private router: Router,
     private activatedRoute: ActivatedRoute) {        
@@ -111,15 +112,15 @@ export class MyGridComponent implements OnInit {
 
   //removed from ng init to fix bug when using two components in same page
   private initDataService() {
-    this.dataService.setBaseUrl(this.params.baseUrl);
-    this.dataService.setResourceName(this.params.resourceName);
-    this.dataService.setErrorMsgHandler(this.params.errorMessageHandler);
-    this.dataService.setSearchMethod(this.params.searchMethod);
+    this.baseService.setBaseUrl(this.params.baseUrl);
+    this.baseService.setResourceName(this.params.resourceName);
+    // this.dataService.setErrorMsgHandler(this.params.errorMessageHandler);
+    // this.baseService.setSearchMethod(this.params.searchMethod);
   }
 
   private getDataFromBackend(): void { 
     this.initDataService();
-    this.dataService.list(this.filters, this.paging, this.sorting).subscribe(
+    this.baseService.search(this.filters, this.paging, this.sorting).subscribe(
       (result: any) => {
         this.entities = result.body;        
         this.paginator.length = +result.headers.get(this.params.totalPagesHeaderName);	      
@@ -164,7 +165,7 @@ export class MyGridComponent implements OnInit {
 		this.dialogRef.afterClosed().subscribe(result => {
       if(result) {
         this.initDataService();
-        this.dataService.delete(id).subscribe(
+        this.baseService.remove(id).subscribe(
           (result: any) => this.reload()
         );
       }
