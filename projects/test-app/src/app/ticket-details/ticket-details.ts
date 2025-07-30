@@ -93,7 +93,22 @@ export class TicketDetails implements OnInit {
   }
 
   cancelEditMode() {
+    if(this.form.touched) {
+      let dialogRef = this.dialog.open(ConfirmationDialogComponent);
+      dialogRef.componentInstance.confirmMessage = "محتوای فرم تغییر کرده است. آیا از عدم ذخیره اطلاعات اطمینان دارید؟";
+      dialogRef.afterClosed().subscribe((result) => {
+        if(result)
+          this.cancelEditModeLogic();
+      })
+    } else 
+      this.cancelEditModeLogic();
+    
+    
+  }
+
+  private cancelEditModeLogic() {
     this.form.patchValue(this.ticket);
+    this.form.markAsUntouched();
     this.form.disable();
     this.pageMode = PageMode.VIEW;
   }
