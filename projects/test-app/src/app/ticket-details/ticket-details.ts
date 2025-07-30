@@ -61,6 +61,7 @@ export class TicketDetails implements OnInit {
       (ticket: any)=> {
         this.form.patchValue(ticket);
         this.ticket = ticket;
+        this.form.disable();
       }
     );
   }
