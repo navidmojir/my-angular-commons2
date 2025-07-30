@@ -133,11 +133,11 @@ export class MyGridComponent implements OnInit {
   //   return this.params.operations.includes(operation);
   // }
 
-  showDetails(id: any): void{
-    alert('implement!');
+  // showDetails(id: any): void{
+  //   alert('implement!');
     // this.currentEntityId = id;
     // this.changePanel(PanelType.DETAILS);
-  }
+  // }
 
   // changePanel(panel: PanelType) {
   //   this.currentPanel = panel;

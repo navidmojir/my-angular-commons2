@@ -1,4 +1,9 @@
-<button mat-raised-button color="accent" (click)="submit()" *ngIf="pageMode == PageMode.CREATE">ثبت</button>
+<button mat-raised-button color="accent" (click)="backToList()" *ngIf="pageMode == PageMode.CREATE || pageMode == PageMode.VIEW">بازگشت</button>
+<button mat-raised-button color="accent" (click)="create()" *ngIf="pageMode == PageMode.CREATE">ثبت</button>
+<button mat-raised-button color="accent" (click)="cancelEditMode()" *ngIf="pageMode == PageMode.UPDATE">انصراف</button>
+<button mat-raised-button color="accent" (click)="save()" *ngIf="pageMode == PageMode.UPDATE">ذخیره</button>
+<button mat-raised-button color="accent" (click)="switchToEditMode()" *ngIf="pageMode == PageMode.VIEW">ویرایش</button>
+<button mat-raised-button color="accent" (click)="remove()" *ngIf="pageMode == PageMode.VIEW">حذف</button>
 <form [formGroup]="form">
     <mat-form-field>
         <mat-label>متن</mat-label>

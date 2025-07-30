@@ -31,8 +31,8 @@ body {
     
 }
 
-*, h2, .mat-dialog-title, .mat-typography h3, .mat-tooltip, .mat-menu-item{
-    font-family: Vazir, Roboto, "Helvetica Neue", sans-serif;
+*, h2, h3, .mat-dialog-title, .mat-typography h3, .mat-tooltip, .mat-menu-item{
+    font-family: Vazir, Roboto, "Helvetica Neue", sans-serif !important;
     font-size: 15px!important;
 }
 

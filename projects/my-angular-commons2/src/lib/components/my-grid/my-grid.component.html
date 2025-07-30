@@ -22,11 +22,6 @@
       <ng-container matColumnDef="operations" stickyEnd>
           <mat-header-cell *matHeaderCellDef>{{params.labels.operations}}</mat-header-cell>
           <mat-cell class="record-operations" *matCellDef="let element">
-              <button mat-raised-button *ngIf="showDetailsButton"
-                  (click)="showDetails(element.id)">{{params.labels.details}}</button>
-
-              <button mat-icon-button *ngIf="showDeleteButton" 
-                  (click)="delete(element.id)" matTooltip="{{params.labels.delete}}"><mat-icon>delete</mat-icon></button>
 
               <ng-container *ngFor="let customAction of params.customRecordActions">
                   <button mat-raised-button  *ngIf="!customAction.icon"

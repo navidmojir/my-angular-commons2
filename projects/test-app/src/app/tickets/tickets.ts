@@ -34,6 +34,13 @@ gridParams: CrudParams = new CrudParams();
     createAction.title = "ایجاد تیکت جدید";
     createAction.onClick = () => this.router.navigate(["ticket-details"]);
     this.gridParams.customGeneralActions.push(createAction);
+
+    let showDetailsAction = new CustomAction();
+    showDetailsAction.title = 'جزئیات';
+    showDetailsAction.onClick = (ticket: any) => this.router.navigate(['ticket-details', ticket.id]);
+    this.gridParams.customRecordActions.push(showDetailsAction);
     
   }
+
+
 }

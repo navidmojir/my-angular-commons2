@@ -8,7 +8,15 @@ export const routes: Routes = [
         component: Tickets
     },
     {
+        path: 'tickets',
+        component: Tickets
+    },
+    {
         path: 'ticket-details',
+        component: TicketDetails
+    },
+    {
+        path: 'ticket-details/:id',
         component: TicketDetails
     }
 ];
