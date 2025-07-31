@@ -59,10 +59,10 @@ export class Tickets {
     createAction.onClick = () => this.router.navigate(["ticket-details"]);
     this.gridParams.customGeneralActions.push(createAction);
 
-    // let searchAction = new CustomAction();
-    // searchAction.title = "جستجو";
-    // searchAction.onClick = () => this.openSearchDialog();
-    // this.gridParams.customGeneralActions.push(searchAction);
+    let searchAction = new CustomAction();
+    searchAction.title = "جستجو";
+    searchAction.onClick = () => this.openSearchDialog();
+    this.gridParams.customGeneralActions.push(searchAction);
 
     let showDetailsAction = new CustomAction();
     showDetailsAction.title = 'جزئیات';
@@ -75,8 +75,8 @@ export class Tickets {
     this.grid.reloadFromPageZero();
   }
 
-  // openSearchDialog() {
-    // this.dialog.open(TicketSearchFiltersDialog);
-  // }
+  openSearchDialog() {
+    this.dialog.open(TicketSearchFiltersDialog);
+  }
 
 }
