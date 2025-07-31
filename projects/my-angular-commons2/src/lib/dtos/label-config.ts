@@ -10,4 +10,5 @@ export class LabelConfigs {
     refresh: string = "بارگذاری مجدد";
     backToList: string = "بازگشت به لیست";
     submit: string = "ثبت";
+    search: string = "جستجو";
 }

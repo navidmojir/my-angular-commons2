@@ -5,6 +5,7 @@ import { FieldConfig } from './field-config';
 import { LabelConfigs } from './label-config';
 import { DefaultErrorMessageHandler } from '../utils/DefaultErrorMessageHandler';
 import { inject } from '@angular/core';
+import { FilterConfig } from './filter-config';
 
 export class CrudParams {
 
@@ -24,6 +25,7 @@ export class CrudParams {
     customRecordActions: CustomAction[] = [];
     customGeneralActions: CustomAction[] = [];
 	showToolbar: boolean = true;
+	filterConfigs: FilterConfig[] = [];
 
     // constructor(resourceName: string, fieldConfigs: FieldConfig[]) {
     //     this._baseUrl = "http://localhost:8080/";

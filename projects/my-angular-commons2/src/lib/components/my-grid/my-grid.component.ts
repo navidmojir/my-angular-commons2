@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,8 +16,43 @@ import {MatDividerModule} from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { getPersianPaginatorIntl } from '../../utils/persian-paginator-intl';
 import { BaseService } from '../../services/base-service/base.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { FilterConfig, FilterType } from '../../dtos/filter-config';
 // import { HttpClientModule } from '@angular/common/http';
 
+@Component({
+  selector: 'search-filters-dialog',
+  templateUrl: 'search-filters-dialog.html',
+  imports: [MatDialogModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [`
+    mat-form-field{width:100%}
+  `]
+})
+export class SearchFiltersDialog {
+  FilterType=FilterType;
+  constructor(private dialogRef: MatDialogRef<SearchFiltersDialog>){
+  }
+  filters = new UntypedFormGroup({
+    text: new UntypedFormControl()
+  });
+  filterConfig: FilterConfig[] = [];
+  applyFilter() {
+    console.log(this.filters.value);
+    this.dialogRef.close(this.filters.value);
+
+  }
+  cancelFilter() {
+    this.filters.reset();
+    console.log(this.filters.value);
+    this.dialogRef.close(this.filters.value);
+  }
+  close() {
+    this.dialogRef.close(false);
+  }
+}
 
 @Component({
   imports: [
@@ -256,6 +291,21 @@ export class MyGridComponent implements OnInit {
       return;
     }
   }
+
+  openSearchDialog() {
+    let dialogRef = this.dialog.open(SearchFiltersDialog);
+    dialogRef.componentInstance.filters.patchValue(this.filters);
+    dialogRef.componentInstance.filterConfig = this.params.filterConfigs;
+    dialogRef.afterClosed().subscribe(
+      (result) => {
+        if(result == false)
+          return;
+        this.filters = result;
+        this.reloadFromPageZero();
+      }
+    )
+  }
+
 
   
 }

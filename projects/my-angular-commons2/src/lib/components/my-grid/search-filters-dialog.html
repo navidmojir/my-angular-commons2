@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>جستجو</h2>
+<mat-dialog-content class="mat-typography" style="width: 500px;">
+  <form [formGroup]="filters" *ngIf="filterConfig">
+    <mat-form-field *ngFor="let conf of filterConfig; index as i">
+      <mat-label>{{conf.label}}</mat-label>
+      <input tabindex="i" *ngIf="conf.type == FilterType.TEXT" [formControlName]="conf.name" (keyup.enter)="applyFilter()" matInput type="text" />
+    </mat-form-field>
+  </form>  
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button matButton (click)="close()">انصراف</button>
+  <button matButton (click)="cancelFilter()" >لغو فیلتر</button>
+  <button matButton (click)="applyFilter()">اعمال فیلتر</button>
+</mat-dialog-actions>

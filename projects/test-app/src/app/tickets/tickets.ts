@@ -6,15 +6,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
-import { MyGridComponent, CrudParams, FieldConfig, CustomAction, ConfirmationDialogComponent} from 'my-angular-commons2';
+import { MyGridComponent, CrudParams, FieldConfig, CustomAction, ConfirmationDialogComponent, FilterConfig} from 'my-angular-commons2';
 
-@Component({
-  selector: 'ticket-search-filters-dialog',
-  templateUrl: 'ticket-search-filters-dialog.html',
-  imports: [MatDialogModule, MatButtonModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
-export class TicketSearchFiltersDialog {}
+// @Component({
+//   selector: 'ticket-search-filters-dialog',
+//   templateUrl: 'ticket-search-filters-dialog.html',
+//   imports: [MatDialogModule, MatButtonModule],
+//   changeDetection: ChangeDetectionStrategy.OnPush,
+// })
+// export class TicketSearchFiltersDialog {}
 
 
 @Component({
@@ -30,8 +30,7 @@ export class Tickets {
 
   @ViewChild(MyGridComponent) grid!: MyGridComponent;
 
-  constructor(private router: Router,
-    private dialog: Dialog
+  constructor(private router: Router
   ) {
   }
 
@@ -59,24 +58,20 @@ export class Tickets {
     createAction.onClick = () => this.router.navigate(["ticket-details"]);
     this.gridParams.customGeneralActions.push(createAction);
 
-    let searchAction = new CustomAction();
-    searchAction.title = "جستجو";
-    searchAction.onClick = () => this.openSearchDialog();
-    this.gridParams.customGeneralActions.push(searchAction);
-
     let showDetailsAction = new CustomAction();
     showDetailsAction.title = 'جزئیات';
     showDetailsAction.onClick = (ticket: any) => this.router.navigate(['ticket-details', ticket.id]);
     this.gridParams.customRecordActions.push(showDetailsAction);
     
+    this.makeFilterConfig();
   }
 
-  applyFilter() {
-    this.grid.reloadFromPageZero();
-  }
+  private makeFilterConfig() {
+    let textFilter: FilterConfig = new FilterConfig();
+    textFilter.name = "text";
+    textFilter.label = "متن تیکت";
+    this.gridParams.filterConfigs.push(textFilter);
 
-  openSearchDialog() {
-    this.dialog.open(TicketSearchFiltersDialog);
   }
 
 }

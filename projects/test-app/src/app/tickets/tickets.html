@@ -1,10 +1,2 @@
-
-<div [formGroup]="filters">
-    <mat-form-field>
-        <mat-label>متن</mat-label>
-        <input formControlName="text" matInput (keyup.enter)="applyFilter()">
-    </mat-form-field>
-</div>
 <lib-my-grid [params]="gridParams" [filters]="filters.value">
-    
 </lib-my-grid>

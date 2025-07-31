@@ -1,7 +1,9 @@
 <div [dir]="params.rtl ? 'rtl' : 'ltr'" >    
-  <div class="toolbar" *ngIf="params.showToolbar">
-      <button mat-raised-button  
-          (click)="reload()">{{params.labels.refresh}}</button>            
+    <div class="toolbar" *ngIf="params.showToolbar">
+        <button mat-raised-button  
+            (click)="reload()">{{params.labels.refresh}}</button>
+        <button mat-raised-button  
+            (click)="openSearchDialog()">{{params.labels.search}}</button>        
 
       <ng-container *ngFor="let customAction of params.customGeneralActions">
           <button mat-raised-button  

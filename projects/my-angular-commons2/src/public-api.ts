@@ -9,3 +9,4 @@ export * from './lib/dtos/field-config';
 export * from './lib/dtos/custom-action';
 export * from './lib/services/base-service/base.service';
 export * from './lib/components/confirmation-dialog/confirmation-dialog.component';
+export * from './lib/dtos/filter-config';
