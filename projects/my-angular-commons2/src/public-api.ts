@@ -10,3 +10,7 @@ export * from './lib/dtos/custom-action';
 export * from './lib/services/base-service/base.service';
 export * from './lib/components/confirmation-dialog/confirmation-dialog.component';
 export * from './lib/dtos/filter-config';
+export * from './lib/auth/app-initializer-service';
+export * from './lib/auth/auth-gaurd';
+export * from './lib/auth/auth-service';
+export * from './lib/auth/kc-config-service';
