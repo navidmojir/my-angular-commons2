@@ -36,6 +36,10 @@ export class AuthService {
         return this.keycloak.idTokenParsed;
     }
 
+    getAccessToken(): string {
+        return this.keycloak.token;
+    }
+
     logout() {
         this.keycloak.logout();
     }
