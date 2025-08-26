@@ -31,14 +31,21 @@ import { FilterConfig, FilterType } from '../../dtos/filter-config';
     mat-form-field{width:100%}
   `]
 })
-export class SearchFiltersDialog {
+export class SearchFiltersDialog implements OnInit{
   FilterType=FilterType;
+  filterConfig: FilterConfig[] = [];
+  filters = new UntypedFormGroup({});
+  currentFilters = {};
   constructor(private dialogRef: MatDialogRef<SearchFiltersDialog>){
   }
-  filters = new UntypedFormGroup({
-    text: new UntypedFormControl()
-  });
-  filterConfig: FilterConfig[] = [];
+  ngOnInit(): void {
+    for(let fc of this.filterConfig) {
+      this.filters.addControl(fc.name, new UntypedFormControl());
+    }
+    this.filters.patchValue(this.currentFilters);
+  }
+  
+  
   applyFilter() {
     console.log(this.filters.value);
     this.dialogRef.close(this.filters.value);
@@ -294,11 +301,11 @@ export class MyGridComponent implements OnInit {
 
   openSearchDialog() {
     let dialogRef = this.dialog.open(SearchFiltersDialog);
-    dialogRef.componentInstance.filters.patchValue(this.filters);
+    dialogRef.componentInstance.currentFilters = this.filters;
     dialogRef.componentInstance.filterConfig = this.params.filterConfigs;
     dialogRef.afterClosed().subscribe(
       (result) => {
-        if(result == false)
+        if(!result)
           return;
         this.filters = result;
         this.reloadFromPageZero();
