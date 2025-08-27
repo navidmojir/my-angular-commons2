@@ -9,19 +9,18 @@ export class AuthService {
 
     private userPermissions: any[] = [];
 
-    private keycloak: any;
+    private keycloak?: Keycloak;
+
+    keycloakConfig: any;
     
     init(config: any): Promise<boolean> {
         try {
+            console.log("begin init auth service");
+            this.keycloakConfig = config;
             this.keycloak = new Keycloak(config);
             return this.keycloak.init({
                 onLoad: 'login-required'
             });
-        //     if (authenticated) {
-        //         console.log(this.keycloak.token);
-        //     } else {
-        //         console.log('User is not authenticated');
-        //     }
         } catch (error) {
             console.error('Failed to initialize adapter:', error);
             throw error;
@@ -29,28 +28,61 @@ export class AuthService {
     }
 
     isAuthenticated(): boolean {
+        if(this.keycloak == undefined)
+            throw "Keycloak is not initialized";
         return this.keycloak.authenticated == true ? true: false;
     }
 
     getUserInfo() {
+        if(this.keycloak == undefined)
+            throw "Keycloak is not initialized";
         return this.keycloak.idTokenParsed;
     }
 
     getAccessToken(): string {
-        return this.keycloak.token;
+        if(this.keycloak == undefined)
+            throw "Keycloak is not initialized";
+        return this.keycloak.token ? this.keycloak.token : "";
     }
 
     logout() {
+        if(this.keycloak == undefined)
+            throw "Keycloak is not initialized";
         this.keycloak.logout();
     }
 
-    loadPermissions() {
+    loadPermissions(): Promise<unknown> {
+        console.log("starting to load permissions");
+        if(this.keycloak == undefined)
+            throw "Keycloak is not initialized";
         let authorization = new KeycloakAuthorization(this.keycloak);
-        authorization.entitlement("demo").then(
-            (rpt) => this.loadRpt(rpt),
-            ()=> console.log("deny"),
-            () => console.log("error")
-        )
+        let promises: Promise<unknown>[] = [];
+        for(let resourceClientId of this.keycloakConfig.resourceServersClientIds) {
+            promises.push(this.loadResourcePermissions(authorization, resourceClientId));
+        }
+        return Promise.all(promises);
+    }
+
+    private loadResourcePermissions(authorization: KeycloakAuthorization, resourceClientId: string): Promise<unknown> {
+        console.log("starting to load permissions for resource with client id " + resourceClientId);
+        return new Promise((resolve, reject) => {
+            authorization.entitlement(resourceClientId).then(
+                (rpt) => {
+                    this.loadRpt(rpt);
+                    resolve(true);
+                    console.log("loading permissions for resource with client id " + resourceClientId + " was succeeded")
+                },
+                ()=> {
+                    console.log("denied when loading permissions");
+                    reject(false);
+                },
+                () => {
+                    console.log("error occured when loading permissions");
+                    reject(false);
+                }
+            );
+        })
+        
     }
 
     private loadRpt(rpt: string) {
@@ -58,7 +90,7 @@ export class AuthService {
 
     this.userPermissions = this.userPermissions.concat(decodedRpt.authorization.permissions);
 
-    // console.log(this.userPermissions);
+    console.log(this.userPermissions);
   }
 
     private decodeToken(str: string) {
@@ -85,7 +117,7 @@ export class AuthService {
   }
 
   hasPermission(resource: string, scope: string) {
-    
+    console.log(this.userPermissions);
     for(let perm of this.userPermissions) {
       if(perm.rsname == scope + " - " + resource)        
           return true;

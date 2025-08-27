@@ -8,6 +8,12 @@ export class AppInitializerService {
     static initialize(): Promise<unknown> {
         let authService = inject(AuthService);
         let configService = inject(KcConfigService);
-        return authService.init(configService.getConfig());
+        return authService.init(configService.getConfig()).then((result)=>{
+            console.log("auth service initialized with " + result);
+            if(result)
+                return authService.loadPermissions();
+            else
+                throw "the result of auth service init was false";
+        });
     }
 }

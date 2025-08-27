@@ -20,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { FilterConfig, FilterType } from '../../dtos/filter-config';
+import { AuthService } from '../../auth/auth-service';
 // import { HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -36,7 +37,9 @@ export class SearchFiltersDialog implements OnInit{
   filterConfig: FilterConfig[] = [];
   filters = new UntypedFormGroup({});
   currentFilters = {};
-  constructor(private dialogRef: MatDialogRef<SearchFiltersDialog>){
+  constructor(private dialogRef: MatDialogRef<SearchFiltersDialog>
+    
+  ){
   }
   ngOnInit(): void {
     for(let fc of this.filterConfig) {
@@ -118,7 +121,7 @@ export class MyGridComponent implements OnInit {
   constructor(private baseService: BaseService,
     public dialog: MatDialog,
     private router: Router,
-    private activatedRoute: ActivatedRoute) {        
+    public authService: AuthService) {        
   }
 
   ngOnInit(): void {
