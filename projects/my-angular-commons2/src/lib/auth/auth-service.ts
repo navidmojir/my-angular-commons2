@@ -90,7 +90,7 @@ export class AuthService {
 
     this.userPermissions = this.userPermissions.concat(decodedRpt.authorization.permissions);
 
-    console.log(this.userPermissions);
+    // console.log(this.userPermissions);
   }
 
     private decodeToken(str: string) {
@@ -117,7 +117,7 @@ export class AuthService {
   }
 
   hasPermission(resource: string, scope: string) {
-    console.log(this.userPermissions);
+    // console.log(this.userPermissions);
     for(let perm of this.userPermissions) {
       if(perm.rsname == scope + " - " + resource)        
           return true;
