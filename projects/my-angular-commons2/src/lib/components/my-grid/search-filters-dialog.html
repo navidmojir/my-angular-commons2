@@ -1,10 +1,26 @@
 <h2 mat-dialog-title>جستجو</h2>
 <mat-dialog-content class="mat-typography" style="width: 500px;">
   <form [formGroup]="filters" *ngIf="filterConfig">
-    <mat-form-field *ngFor="let conf of filterConfig; index as i">
-      <mat-label>{{conf.label}}</mat-label>
-      <input tabindex="i" *ngIf="conf.type == FilterType.TEXT" [formControlName]="conf.name" (keyup.enter)="applyFilter()" matInput type="text" />
-    </mat-form-field>
+    <div style="overflow-y: hidden;" *ngFor="let conf of filterConfig; index as i">
+      <mat-form-field *ngIf="conf.type == FilterType.TEXT" >
+        <mat-label >{{conf.label}}</mat-label>
+        <input tabindex="i" [formControlName]="conf.name" (keyup.enter)="applyFilter()" matInput type="text" />
+      </mat-form-field>
+      
+      <mat-slide-toggle *ngIf="conf.type == FilterType.TOGGLE" [checked]="conf.name" [formControlName]="conf.name">
+          {{conf.label}}
+      </mat-slide-toggle>
+
+      <mat-form-field *ngIf="conf.type == FilterType.MULTI_SELECT">
+        <mat-label>{{conf.label}}</mat-label>
+        <mat-select [formControlName]="conf.name" multiple>
+          
+          @for (value of conf.values; track value) {
+            <mat-option [value]="value.name">{{value.title}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
   </form>  
 </mat-dialog-content>
 <mat-dialog-actions>

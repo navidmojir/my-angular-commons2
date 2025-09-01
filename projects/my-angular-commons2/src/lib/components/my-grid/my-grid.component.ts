@@ -21,12 +21,14 @@ import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angu
 import { MatInputModule } from '@angular/material/input';
 import { FilterConfig, FilterType } from '../../dtos/filter-config';
 import { AuthService } from '../../auth/auth-service';
-// import { HttpClientModule } from '@angular/common/http';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'search-filters-dialog',
   templateUrl: 'search-filters-dialog.html',
-  imports: [MatDialogModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, CommonModule],
+  imports: [MatDialogModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule,
+    CommonModule, MatSlideToggleModule, MatSelectModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
     mat-form-field{width:100%}
