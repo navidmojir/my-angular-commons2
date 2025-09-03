@@ -16,7 +16,7 @@
         <mat-select [formControlName]="conf.name" multiple>
           
           @for (value of conf.values; track value) {
-            <mat-option [value]="value.name">{{value.title}}</mat-option>
+            <mat-option [value]="value.key">{{value.value}}</mat-option>
           }
         </mat-select>
       </mat-form-field>
