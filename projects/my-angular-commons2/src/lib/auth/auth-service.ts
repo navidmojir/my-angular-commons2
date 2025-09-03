@@ -21,10 +21,15 @@ export class AuthService {
             return this.keycloak.init({
                 onLoad: 'login-required'
             });
+
         } catch (error) {
             console.error('Failed to initialize adapter:', error);
             throw error;
         }
+    }
+
+    getKeycloak() : any{
+        return this.keycloak;
     }
 
     isAuthenticated(): boolean {
@@ -124,5 +129,13 @@ export class AuthService {
     }
     
     return false;
+  }
+
+  public getTokenExpiresIn(): any {
+    const now = Math.floor(Date.now() / 1000); // current time in seconds
+    const exp = this.keycloak?.tokenParsed?.exp;    // expiration time
+    console.log("now", now);
+    console.log("exp", exp);
+    return exp ? exp - now : 0;
   }
 }
