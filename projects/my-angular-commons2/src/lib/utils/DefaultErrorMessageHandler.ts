@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { ErrorDto, IErrorMessageHandler } from "../interfaces/IErrorMessageHandler";
+import { ErrorDto, IErrorMessageHandler, IErrorTranslator } from "../interfaces/IErrorMessageHandler";
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ErrorDialogComponent } from "../components/error-dialog/error-dialog.component";
 import { throwError } from 'rxjs';
 import { inject, Injectable } from "@angular/core";
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,8 @@ import { inject, Injectable } from "@angular/core";
 export class DefaultErrorMessageHandler implements IErrorMessageHandler {
 
     private dialog: MatDialog = inject(MatDialog);
+
+    private errorTranslator: IErrorTranslator | null = null;
 
     handle(error: HttpErrorResponse) {
         try {
@@ -47,7 +50,8 @@ export class DefaultErrorMessageHandler implements IErrorMessageHandler {
                 details:'Response body received from backend is empty. So detecting error is impossible. HTTP status code is ' + httpErrorResponse.status};
 
             let message = '';
-        switch(httpErrorResponse.error.error)
+        let errorEnum = httpErrorResponse.error.error;
+        switch(errorEnum)
         {
         case 'INTERNAL_ERROR':
         case 'Internal Server Error':
@@ -63,11 +67,18 @@ export class DefaultErrorMessageHandler implements IErrorMessageHandler {
             message = 'داده های ورودی معتبر نیست'; 
             break;
         default:
-            message = 'ترجمه کد خطا یافت نشد. کد خطا: ' + httpErrorResponse.error.error;
+            if(this.errorTranslator != null)
+                message = this.errorTranslator.translate(errorEnum);
+            else
+                message = 'ترجمه کد خطا یافت نشد. کد خطا: ' + httpErrorResponse.error.error;
             break;
         }
         
         return {message: message, details: httpErrorResponse.error.message};
+    }
+
+    public setErrorTranslator(errorTranslator: IErrorTranslator) {
+        this.errorTranslator = errorTranslator;
     }
     
 }

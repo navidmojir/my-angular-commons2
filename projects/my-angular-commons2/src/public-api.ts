@@ -16,3 +16,4 @@ export * from './lib/auth/auth-service';
 export * from './lib/auth/kc-config-service';
 export * from './lib/auth/auth-interceptor';
 export * from './lib/pipes/jalali.pipe';
+export * from './lib/interfaces/IErrorMessageHandler';

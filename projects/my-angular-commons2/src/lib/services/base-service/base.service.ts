@@ -4,7 +4,7 @@ import { inject, Injectable } from "@angular/core";
 import { DefaultErrorMessageHandler } from "../../utils/DefaultErrorMessageHandler";
 import { Paging } from "../../dtos/paging";
 import { Sorting } from "../../dtos/sorting";
-import { IErrorMessageHandler } from "../../interfaces/IErrorMessageHandler";
+import { IErrorMessageHandler, IErrorTranslator } from "../../interfaces/IErrorMessageHandler";
 
 @Injectable({
     providedIn: 'root'
@@ -30,6 +30,10 @@ export class BaseService {
 
     public setBaseUrl(baseUrl: string): void {
         this.baseUrl = baseUrl;
+    }
+
+    public setErrorTranslator(errorTranslator: IErrorTranslator) {
+        this.errorMessageHandlerService.setErrorTranslator(errorTranslator);
     }
 
     public setResourceName(resourceName: String) {
