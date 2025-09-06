@@ -1,3 +1,5 @@
+import { Observable } from "rxjs";
+
 export enum FilterType {
     TEXT,
     TOGGLE,
@@ -8,6 +10,6 @@ export class FilterConfig {
     name: string = "";
     label: string = "";
     type: FilterType = FilterType.TEXT;
-    values: any[] = [];
+    values: Observable<any[]> | undefined;
 }
 
