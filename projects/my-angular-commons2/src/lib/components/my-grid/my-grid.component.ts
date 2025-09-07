@@ -132,7 +132,8 @@ export class MyGridComponent implements OnInit {
     
 
     this.initializeSorting();
-    this.initializePaging();    
+    this.initializePaging();
+    this.initializeFilters();    
 
     if(this.entities.length == 0)
       this.getDataFromBackend();
@@ -302,6 +303,12 @@ export class MyGridComponent implements OnInit {
       this.paging = {};
       return;
     }
+  }
+
+  private initializeFilters() {
+    this.filters = this.getFromLocalStorage("filters");
+    if(this.filters == null)
+      this.filters = {};
   }
 
   openSearchDialog() {
