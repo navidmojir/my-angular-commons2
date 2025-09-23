@@ -3,11 +3,12 @@ import { Observable } from "rxjs";
 export enum FilterType {
     TEXT,
     TOGGLE,
-    MULTI_SELECT
+    MULTI_SELECT,
+    DATE_RANGE
 }
 
 export class FilterConfig {
-    name: string = "";
+    name: any;
     label: string = "";
     type: FilterType = FilterType.TEXT;
     values: Observable<any[]> | undefined;

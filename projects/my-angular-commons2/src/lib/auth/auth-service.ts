@@ -132,8 +132,11 @@ export class AuthService {
   }
 
   public getTokenExpiresIn(): any {
+    
     const now = Math.floor(Date.now() / 1000); // current time in seconds
     const exp = this.keycloak?.tokenParsed?.exp;    // expiration time
+    console.log("now in seconds: ", now);
+    console.log("token exp time in seconds: exp", exp);
     return exp ? exp - now : 0;
   }
 }

@@ -1,12 +1,9 @@
 import { Component, OnInit, Input, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { CrudParams } from '../../dtos/crud-params';
-// import { Operation } from '../enums/operations';
-// import { PanelType } from '../enums/panel-type';
-// import { DataService } from '../../services/data-service/data.service';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
@@ -17,18 +14,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { getPersianPaginatorIntl } from '../../utils/persian-paginator-intl';
 import { BaseService } from '../../services/base-service/base.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { FilterConfig, FilterType } from '../../dtos/filter-config';
 import { AuthService } from '../../auth/auth-service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { CalendarDate } from '@internationalized/date';
 
 @Component({
   selector: 'search-filters-dialog',
   templateUrl: 'search-filters-dialog.html',
   imports: [MatDialogModule, MatButtonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule,
-    CommonModule, MatSlideToggleModule, MatSelectModule],
+    CommonModule, MatSlideToggleModule, MatSelectModule, MatDatepickerModule, FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
     mat-form-field{width:100%}
@@ -38,16 +37,43 @@ export class SearchFiltersDialog implements OnInit{
   FilterType=FilterType;
   filterConfig: FilterConfig[] = [];
   filters = new UntypedFormGroup({});
-  currentFilters = {};
+  currentFilters: any = {};
   constructor(private dialogRef: MatDialogRef<SearchFiltersDialog>
     
   ){
   }
   ngOnInit(): void {
     for(let fc of this.filterConfig) {
-      this.filters.addControl(fc.name, new UntypedFormControl());
+      if(fc.type == FilterType.DATE_RANGE) {
+        this.filters.addControl(fc.name, new UntypedFormGroup({
+          start: new UntypedFormControl(), end: new UntypedFormControl()
+        }));
+        this.convertCurrentFilterToCalendarDate(fc.name);
+      }
+      else
+        this.filters.addControl(fc.name, new UntypedFormControl());
     }
+    // console.log("form structure ", this.filters)
+    // console.log("patching value to filters", this.currentFilters)
     this.filters.patchValue(this.currentFilters);
+    // console.log("form structure after patch value", this.filters)
+  }
+
+  private convertCurrentFilterToCalendarDate(name: string) {
+    if(this.currentFilters[name]) {
+      if(this.currentFilters[name]["start"])
+        this.currentFilters[name]["start"] = new CalendarDate(
+          this.currentFilters[name]["start"]["year"],
+          this.currentFilters[name]["start"]["month"],
+          this.currentFilters[name]["start"]["day"]
+        );
+      if(this.currentFilters[name]["end"])
+        this.currentFilters[name]["end"] = new CalendarDate(
+          this.currentFilters[name]["end"]["year"],
+          this.currentFilters[name]["end"]["month"],
+          this.currentFilters[name]["end"]["day"]
+        );
+    }
   }
   
   

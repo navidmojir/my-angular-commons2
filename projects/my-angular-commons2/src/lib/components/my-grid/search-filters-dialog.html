@@ -20,6 +20,17 @@
           }
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field *ngIf="conf.type == FilterType.DATE_RANGE" >
+        <mat-label>{{conf.label}}</mat-label>
+        <mat-date-range-input [formGroupName]="conf.name" [rangePicker]="picker">
+          <input matStartDate formControlName="start" placeholder="از تاریخ">
+          <input matEndDate formControlName="end" placeholder="تا تاریخ">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+
+      </mat-form-field> 
     </div>
   </form>  
 </mat-dialog-content>
