@@ -10,7 +10,8 @@ export class AppInitializerService {
         let configService = inject(KcConfigService);
         return authService.init(configService.getConfig()).then((result)=>{            
             if(result) {
-                let tokenRefreshTimeout = (authService.getTokenExpiresIn() - 10)*1000;
+                // let tokenRefreshTimeout = (authService.getTokenExpiresIn() - 10)*1000;
+                let tokenRefreshTimeout = 300*1000;
                 console.log("Attempting to set interval for refreshing token with timeout ", tokenRefreshTimeout);
                 setInterval(()=>{
                     console.log("Trying to refresh access token");
