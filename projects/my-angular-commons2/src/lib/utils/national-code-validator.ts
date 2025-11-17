@@ -3,6 +3,8 @@ import { Directive } from '@angular/core';
 
 export function nationalCodeValidator(): ValidatorFn {
 	return (control: AbstractControl): {[key: string]: any} | null => {
+		if(!control.value || control.value == "")
+			return null;
 		if (!/^\d{10}$/.test(control.value)) {
 			return {'nationalCode': {value: control.value}};
 		}

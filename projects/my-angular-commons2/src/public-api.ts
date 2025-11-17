@@ -20,4 +20,4 @@ export * from './lib/interfaces/IErrorMessageHandler';
 export * from './lib/utils/loading-helper/services/spinner-interceptor';
 export * from './lib/utils/shamsi-material-date-adapter';
 export * from './lib/utils/national-code-validator';
-export * from './lib/components/searchable-select/searchable-select.component';
+// export * from './lib/components/searchable-select/searchable-select.component';
