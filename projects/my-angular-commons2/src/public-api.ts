@@ -16,6 +16,7 @@ export * from './lib/auth/auth-service';
 export * from './lib/auth/kc-config-service';
 export * from './lib/auth/auth-interceptor';
 export * from './lib/pipes/jalali.pipe';
+export * from './lib/pipes/persian-date.pipe';
 export * from './lib/interfaces/IErrorMessageHandler';
 export * from './lib/utils/loading-helper/services/spinner-interceptor';
 export * from './lib/utils/shamsi-material-date-adapter';

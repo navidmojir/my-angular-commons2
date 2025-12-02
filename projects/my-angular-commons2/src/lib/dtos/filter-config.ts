@@ -4,7 +4,8 @@ export enum FilterType {
     TEXT,
     TOGGLE,
     MULTI_SELECT,
-    DATE_RANGE
+    DATE_RANGE,
+    DATE
 }
 
 export class FilterConfig {

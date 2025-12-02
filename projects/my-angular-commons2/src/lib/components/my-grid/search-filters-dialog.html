@@ -29,8 +29,16 @@
         </mat-date-range-input>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
-
       </mat-form-field> 
+
+      <mat-form-field *ngIf="conf.type == FilterType.DATE" >
+        <mat-label>{{conf.label}}</mat-label>
+        <input matInput [matDatepicker]="dpicker" [formControlName]="conf.name">
+        <mat-datepicker-toggle matIconSuffix [for]="dpicker"></mat-datepicker-toggle>
+        <mat-datepicker #dpicker></mat-datepicker>
+      </mat-form-field> 
+
+        
     </div>
   </form>  
 </mat-dialog-content>
