@@ -51,7 +51,7 @@ export class SearchFiltersDialog implements OnInit{
         this.convertCurrentFilterToCalendarDate(fc.name);
       }
       else
-        this.filters.addControl(fc.name, new UntypedFormControl());
+        this.filters.addControl(fc.name, new UntypedFormControl(fc.value));
     }
     // console.log("form structure ", this.filters)
     // console.log("patching value to filters", this.currentFilters)
@@ -78,7 +78,7 @@ export class SearchFiltersDialog implements OnInit{
   
   
   applyFilter() {
-    // console.log(this.filters.value);
+    console.log(this.filters.value);
     this.dialogRef.close(this.filters.value);
 
   }
@@ -335,6 +335,15 @@ export class MyGridComponent implements OnInit {
     this.filters = this.getFromLocalStorage("filters");
     if(this.filters == null)
       this.filters = {};
+
+    this.applyHiddenFilters();
+  }
+
+  private applyHiddenFilters() {
+    for(let filterConf of this.params.filterConfigs) {
+      if(filterConf.type == FilterType.HIDDEN) 
+        this.filters[filterConf.name] = filterConf.value;
+    }
   }
 
   openSearchDialog() {
@@ -346,6 +355,7 @@ export class MyGridComponent implements OnInit {
         if(!result)
           return;
         this.filters = result;
+        this.applyHiddenFilters();
         this.reloadFromPageZero();
       }
     )

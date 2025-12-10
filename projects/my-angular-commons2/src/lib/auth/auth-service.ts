@@ -13,6 +13,10 @@ export class AuthService {
 
     keycloakConfig: any;
     
+    setKeycloakExternally(keycloak: Keycloak) {
+        this.keycloak = keycloak;
+    }
+
     init(config: any): Promise<boolean> {
         try {
             console.log("begin init auth service");
@@ -50,10 +54,10 @@ export class AuthService {
         return this.keycloak.token ? this.keycloak.token : "";
     }
 
-    logout() {
+    logout(options: any) {
         if(this.keycloak == undefined)
             throw "Keycloak is not initialized";
-        this.keycloak.logout();
+        this.keycloak.logout(options);
     }
 
     loadPermissions(): Promise<unknown> {

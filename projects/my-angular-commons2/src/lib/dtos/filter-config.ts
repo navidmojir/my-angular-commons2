@@ -5,7 +5,8 @@ export enum FilterType {
     TOGGLE,
     MULTI_SELECT,
     DATE_RANGE,
-    DATE
+    DATE,
+    HIDDEN
 }
 
 export class FilterConfig {
@@ -13,5 +14,6 @@ export class FilterConfig {
     label: string = "";
     type: FilterType = FilterType.TEXT;
     values: Observable<any[]> | undefined;
+    value: any;
 }
 
