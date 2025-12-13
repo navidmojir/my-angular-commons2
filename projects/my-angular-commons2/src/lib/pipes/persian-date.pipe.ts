@@ -6,9 +6,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class PersianDatePipe implements PipeTransform {
 
 	transform(value: any, args?: any): any {
-		if(value == null)
+		if(!value)
 			return '-'; 
-		return value.year + '/' + value.month + '/' + value.day;
+		return value?.year + '/' + value?.month + '/' + value?.day;
 	}
 
 }
