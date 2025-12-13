@@ -1,0 +1,63 @@
+/* .card {
+    max-width: 150px;
+    float: right;
+} */
+.mat-icon {
+    font-size: 20px !important;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #f4f3f6;
+  border-radius: 12px;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
+.flex-container > div {
+  background-color: #d7e3ff;
+  border-radius: 5px;
+  width: 100px;
+  margin: 10px;
+  text-align: center;
+  /* line-height: 75px; */
+  font-size: 30px;
+  padding-top: 20px;
+}
+
+/* .flex-container > div > img{
+    width: 100px;
+    height: 80px;
+} */
+
+.flex-container > div > p{
+    margin: 0 ;
+    padding: 0 ;
+}
+
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.modern-table thead {
+    background: #f0f4fa;
+}
+
+.modern-table th {
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    color: #333;
+}
+
+.modern-table td {
+    /* padding: 12px; */
+    text-align: center;
+    border-top: 1px solid #eee;
+}
+
+.modern-table tr:hover {
+    background: #e8f2ff;
+}

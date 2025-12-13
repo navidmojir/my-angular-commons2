@@ -1,0 +1,79 @@
+
+<input type="file" style="display: none;" [accept]="accept" (change)="onFileSelected($event)" #fileUpload multiple/>
+
+
+<!-- <div class="flex-container">
+    @for(uploadedFile of uploadedFiles; track uploadedFile) {
+    <div>
+        <p dir="ltr" [title]="uploadedFile.fileName">{{trimFileName(uploadedFile.fileName)}}</p>
+        <p dir="ltr">{{getFileSize(uploadedFile)}}</p>
+        <button matIconButton (click)="downloadFile(uploadedFile.id, uploadedFile.fileName)"><mat-icon>cloud_download</mat-icon></button>
+        @if(showDeleteButton) {
+        <button matIconButton (click)="removeFile(uploadedFile.id)"><mat-icon>delete</mat-icon></button>
+        }
+    </div>
+    }
+    @for(selectedFile of selectedFiles; track selectedFile) {
+    <div dir="ltr">
+        <p dir="ltr" [title]="selectedFile.name">{{trimFileName(selectedFile.name)}}</p>
+        <p dir="ltr">{{getFileSize(selectedFile)}}</p>
+        <mat-progress-bar style="margin-top: 15px;"  mode="determinate" [value]="selectedFile['progress']"></mat-progress-bar>
+    </div>
+    }
+    @if(showAddButton) {
+    <div style="cursor: pointer;" (click)="fileUpload.click()"><mat-icon style="margin-top: 20px; min-height: 60px;">add</mat-icon></div>
+    }
+</div> -->
+
+<table class="modern-table">
+    <thead>
+        <tr>
+            <th>نوع پیوست</th>
+            <th>نام فایل</th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <!-- <tr>
+            <td>شناسنامه</td>
+            <td>shenasname.pdf</td>
+            <td><button mat-icon-button matTooltip="دانلود"><mat-icon>file_download</mat-icon></button></td>
+        </tr> -->
+
+        @for(uploadedFile of uploadedFiles; track uploadedFile) {
+            <tr>
+                <td>{{getTypeFaTitle(uploadedFile.type)}}</td>
+                <td [title]="uploadedFile.fileName">{{trimFileName(uploadedFile.fileName)}}</td>
+                <td>
+                    <button mat-icon-button matTooltip="دانلود" (click)="downloadFile(uploadedFile.id, uploadedFile.fileName)">
+                        <mat-icon>file_download</mat-icon>
+                    </button>
+                    @if(showDeleteButton) {
+                        <button matIconButton (click)="removeFile(uploadedFile.id)"><mat-icon>delete</mat-icon></button>
+                    }
+                </td>
+                
+            </tr>
+        }
+
+        @for(selectedFile of selectedFiles; track selectedFile) {
+            <tr>
+                <td>{{getTypeFaTitle(selectedFile.type)}}</td>
+                <td [title]="selectedFile.name">{{trimFileName(selectedFile.name)}}</td>
+                <td><mat-progress-bar style="margin-top: 15px;"  mode="determinate" [value]="selectedFile['progress']"></mat-progress-bar></td>
+            </tr>
+        }
+        @if(showAddButton) {
+            <tr>
+                <td colspan="3">
+                    <div style="cursor: pointer;" (click)="uploadFile()">
+                        <mat-icon style="margin-top: 10px;">add</mat-icon>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
