@@ -32,8 +32,10 @@ export class AuthService {
         }
     }
 
-    getKeycloak() : any{
-        return this.keycloak;
+    getKeycloak() : Keycloak {
+        if(this.keycloak)
+            return this.keycloak;
+        throw new Error("keycloak object is undefined");
     }
 
     isAuthenticated(): boolean {
