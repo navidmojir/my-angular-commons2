@@ -28,6 +28,9 @@
 <table class="modern-table">
     <thead>
         <tr>
+            @if(showCheckBox) {
+                <th></th>  
+            }
             <th>نوع پیوست</th>
             <th>نام فایل</th>
             <th>عملیات</th>
@@ -43,6 +46,9 @@
 
         @for(uploadedFile of uploadedFiles; track uploadedFile) {
             <tr>
+                @if(showCheckBox) {
+                    <mat-checkbox (change)="onCheckboxChange($event, uploadedFile)"></mat-checkbox>
+                }
                 <td>{{getTypeFaTitle(uploadedFile.type)}}</td>
                 <td [title]="uploadedFile.fileName">{{trimFileName(uploadedFile.fileName)}}</td>
                 <td>
@@ -66,7 +72,7 @@
         }
         @if(showAddButton) {
             <tr>
-                <td colspan="3">
+                <td colspan="4">
                     <div style="cursor: pointer;" (click)="uploadFile()">
                         <mat-icon style="margin-top: 10px;">add</mat-icon>
                     </div>

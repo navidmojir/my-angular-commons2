@@ -17,6 +17,10 @@ export class AuthService {
         this.keycloak = keycloak;
     }
 
+    setKeycloakConfigExternally(config: any) {
+        this.keycloakConfig = config;
+    }
+
     init(config: any): Promise<boolean> {
         try {
             console.log("begin init auth service");

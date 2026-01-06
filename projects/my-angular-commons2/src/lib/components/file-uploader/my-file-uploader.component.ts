@@ -12,6 +12,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 
 export interface FileUploaderService {
   uploadFile(file: File, metadata: any): Observable<any>;
@@ -21,7 +22,8 @@ export interface FileUploaderService {
 }
 
 @Component({
-  imports: [CommonModule, MatButtonModule, MatDialogModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule],
+  imports: [CommonModule, MatButtonModule, MatDialogModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule
+  ],
   selector: 'app-confirmation-dialog',
   template: `
     <h3 style="text-align:right" mat-dialog-title>آپلود فایل</h3>
@@ -66,7 +68,7 @@ export class FileUploadDialogComponent {
 
 @Component({
   selector: 'my-file-uploader',
-  imports: [MatButtonModule, MatCardModule, MatIconModule, MatProgressBarModule],
+  imports: [MatButtonModule, MatCardModule, MatIconModule, MatProgressBarModule, MatCheckboxModule],
   templateUrl: './my-file-uploader.component.html',
   styleUrls: ['./my-file-uploader.component.css']
 })
@@ -81,8 +83,11 @@ export class MyFileUploaderComponent implements OnInit {
   @Input() fileUploaderService!: FileUploaderService;
   @Input() metadata: any;
   @Input() showAddButton = true;
+  @Input() showCheckBox = false;
   @Input() showDeleteButton = true;
   @Input() types: any[] = [];
+
+  @Output() onSelectChange = new EventEmitter();
 
   selectedFiles: any[] = [];
   uploadedFiles: any[] = [];
@@ -204,6 +209,22 @@ export class MyFileUploaderComponent implements OnInit {
         return type.faTitle;
     }
     return '-';
+  }
+
+  selectedAttachmentIds: Set<number> = new Set();
+  onCheckboxChange(ev: MatCheckboxChange, uploadedFile: any) {
+    if(ev.checked)
+      this.selectedAttachmentIds.add(uploadedFile.id);
+    else
+      this.selectedAttachmentIds.delete(uploadedFile.id);
+    
+    this.onSelectChange.emit(this.selectedAttachmentIds);
+    // let el = ev.target as HTMLElement;
+    // if(el.style.backgroundColor == 'lightblue')
+    //   el.style.backgroundColor = '';
+    // else
+    //   el.style.backgroundColor = 'lightblue';
+
   }
 
 }
