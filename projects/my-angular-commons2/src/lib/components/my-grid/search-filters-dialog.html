@@ -21,6 +21,16 @@
         </mat-select>
       </mat-form-field>
 
+      <mat-form-field *ngIf="conf.type == FilterType.SELECT">
+        <mat-label>{{conf.label}}</mat-label>
+        <mat-select [formControlName]="conf.name">
+          
+          @for (value of conf.values | async; track value) {
+            <mat-option [value]="value.key">{{value.value}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
       <mat-form-field *ngIf="conf.type == FilterType.DATE_RANGE" >
         <mat-label>{{conf.label}}</mat-label>
         <mat-date-range-input [formGroupName]="conf.name" [rangePicker]="picker">

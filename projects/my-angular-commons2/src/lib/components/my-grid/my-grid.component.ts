@@ -189,6 +189,7 @@ export class MyGridComponent implements OnInit {
   private initDataService() {
     this.baseService.setBaseUrl(this.params.baseUrl);
     this.baseService.setResourceName(this.params.resourceName);
+    this.baseService.setSearchMethod(this.params.searchMethod);
     // this.dataService.setErrorMsgHandler(this.params.errorMessageHandler);
     // this.baseService.setSearchMethod(this.params.searchMethod);
   }

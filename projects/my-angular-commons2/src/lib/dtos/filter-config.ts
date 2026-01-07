@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 export enum FilterType {
     TEXT,
     TOGGLE,
+    SELECT,
     MULTI_SELECT,
     DATE_RANGE,
     DATE,

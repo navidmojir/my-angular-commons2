@@ -13,6 +13,7 @@ export class BaseService {
 
     private baseUrl: String = "http://localhost:8080";
     private resourceName: String = "resources";
+    private searchMethod = "/search";
 
     private httpClient: HttpClient = inject(HttpClient);
     private errorMessageHandlerService: IErrorMessageHandler = inject(DefaultErrorMessageHandler);
@@ -30,6 +31,10 @@ export class BaseService {
 
     public setBaseUrl(baseUrl: string): void {
         this.baseUrl = baseUrl;
+    }
+
+    public setSearchMethod(searchMethod: string): void {
+        this.searchMethod = searchMethod;
     }
 
     public setErrorTranslator(errorTranslator: IErrorTranslator) {
@@ -84,7 +89,7 @@ export class BaseService {
 
     public search(filters: any, paging: Paging, sorting: Sorting) {
         let req = {filters: filters, paging: paging, sorting: sorting};
-        return this.post('/' + this.resourceName + '/search', req, {observe: 'response'});
+        return this.post('/' + this.resourceName + this.searchMethod, req, {observe: 'response'});
     }
 
     public remove(id: string) {
