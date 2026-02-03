@@ -69,6 +69,12 @@ export class BaseService {
         );
     }
 
+    public patch(path: string, body: any) {
+        return this.httpClient.patch(this.baseUrl + path, body).pipe(
+              catchError((error) => this.handleError(error))
+        );
+    }
+
     public delete(path: string) {
         return this.httpClient.delete(this.baseUrl + path).pipe(
               catchError((error) => this.handleError(error))
@@ -85,6 +91,10 @@ export class BaseService {
 
     public update(id: string, entity: any) {
         return this.put('/' + this.resourceName + '/' + id, entity);
+    }
+
+    public patchUpdate(id: string, entity: any) {
+        return this.patch('/' + this.resourceName + '/' + id, entity);
     }
 
     public search(filters: any, paging: Paging, sorting: Sorting) {

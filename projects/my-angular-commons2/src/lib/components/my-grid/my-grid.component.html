@@ -11,6 +11,11 @@
       </ng-container>
   </div>
 
+  <div>
+    <!-- @for(filter of filters; track $index) {
+        <span>{{filter}}</span>
+    } -->
+  </div>
   <mat-divider></mat-divider>
       
   <table mat-table matSort (matSortChange)="applySorting($event)" [matSortActive]="sort.active" [matSortDirection]="sort.direction" [dataSource]="entities" >

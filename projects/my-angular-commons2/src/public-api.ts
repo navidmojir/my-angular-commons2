@@ -23,4 +23,6 @@ export * from './lib/utils/shamsi-material-date-adapter';
 export * from './lib/utils/national-code-validator';
 export * from './lib/utils/blob-helpers.service';
 export * from './lib/components/file-uploader/my-file-uploader.component';
+export * from './lib/dtos/paging';
+export * from './lib/dtos/sorting';
 // export * from './lib/components/searchable-select/searchable-select.component';

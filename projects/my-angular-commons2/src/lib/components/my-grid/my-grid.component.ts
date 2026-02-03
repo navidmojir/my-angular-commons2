@@ -78,7 +78,7 @@ export class SearchFiltersDialog implements OnInit{
   
   
   applyFilter() {
-    console.log(this.filters.value);
+    // console.log(this.filters.value);
     this.dialogRef.close(this.filters.value);
 
   }
@@ -354,7 +354,7 @@ export class MyGridComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       (result) => {
         if(!result)
-          return;
+          return;        
         this.filters = result;
         this.applyHiddenFilters();
         this.reloadFromPageZero();
