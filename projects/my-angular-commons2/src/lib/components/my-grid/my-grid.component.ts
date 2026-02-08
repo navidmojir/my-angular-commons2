@@ -4,12 +4,12 @@ import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/pag
 import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { CrudParams } from '../../dtos/crud-params';
-import {MatTableModule} from '@angular/material/table';
-import {MatIconModule} from '@angular/material/icon';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 import { MatSortModule } from '@angular/material/sort';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { getPersianPaginatorIntl } from '../../utils/persian-paginator-intl';
 import { BaseService } from '../../services/base-service/base.service';
@@ -22,6 +22,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { CalendarDate } from '@internationalized/date';
+import { MatChipsModule } from '@angular/material/chips';
+
+export interface SelectedFilter {
+  label: string;
+  value: any;
+  name: string;
+}
 
 @Component({
   selector: 'search-filters-dialog',
@@ -33,18 +40,18 @@ import { CalendarDate } from '@internationalized/date';
     mat-form-field{width:100%}
   `]
 })
-export class SearchFiltersDialog implements OnInit{
-  FilterType=FilterType;
+export class SearchFiltersDialog implements OnInit {
+  FilterType = FilterType;
   filterConfig: FilterConfig[] = [];
   filters = new UntypedFormGroup({});
   currentFilters: any = {};
   constructor(private dialogRef: MatDialogRef<SearchFiltersDialog>
-    
-  ){
+
+  ) {
   }
   ngOnInit(): void {
-    for(let fc of this.filterConfig) {
-      if(fc.type == FilterType.DATE_RANGE) {
+    for (let fc of this.filterConfig) {
+      if (fc.type == FilterType.DATE_RANGE) {
         this.filters.addControl(fc.name, new UntypedFormGroup({
           start: new UntypedFormControl(), end: new UntypedFormControl()
         }));
@@ -60,14 +67,14 @@ export class SearchFiltersDialog implements OnInit{
   }
 
   private convertCurrentFilterToCalendarDate(name: string) {
-    if(this.currentFilters[name]) {
-      if(this.currentFilters[name]["start"])
+    if (this.currentFilters[name]) {
+      if (this.currentFilters[name]["start"])
         this.currentFilters[name]["start"] = new CalendarDate(
           this.currentFilters[name]["start"]["year"],
           this.currentFilters[name]["start"]["month"],
           this.currentFilters[name]["start"]["day"]
         );
-      if(this.currentFilters[name]["end"])
+      if (this.currentFilters[name]["end"])
         this.currentFilters[name]["end"] = new CalendarDate(
           this.currentFilters[name]["end"]["year"],
           this.currentFilters[name]["end"]["month"],
@@ -75,37 +82,46 @@ export class SearchFiltersDialog implements OnInit{
         );
     }
   }
-  
-  
+
+
   applyFilter() {
     // console.log(this.filters.value);
-    this.dialogRef.close(this.filters.value);
+
+    this.dialogRef.close(this.filters.value
+      /*, selectedFilters: this.makeSelectedFilters() }*/);
 
   }
   cancelFilter() {
     this.filters.reset();
     // console.log(this.filters.value);
+
+
     this.dialogRef.close(this.filters.value);
   }
   close() {
     this.dialogRef.close(false);
   }
+
+
+
+
 }
 
 @Component({
   imports: [
     CommonModule,
-    MatPaginator, 
+    MatPaginator,
     MatTableModule,
     MatIconModule,
     MatTooltipModule,
     MatSortModule,
     MatDividerModule,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    MatChipsModule
   ],
   providers: [
-    { provide: MatPaginatorIntl, useValue: getPersianPaginatorIntl()}
+    { provide: MatPaginatorIntl, useValue: getPersianPaginatorIntl() }
   ],
   selector: 'lib-my-grid',
   templateUrl: './my-grid.component.html',
@@ -120,12 +136,13 @@ export class MyGridComponent implements OnInit {
 
   entities: any[] = [];
 
-//   entity: any = {};
+  //   entity: any = {};
 
-//   currentEntityId: any = 0;
+  //   currentEntityId: any = 0;
 
-//   operationType = Operation;
-  
+  //   operationType = Operation;
+  selectedFilters: SelectedFilter[] = [];
+
   displayedCols: String[] = [];
 
   sorting: any = {};
@@ -136,7 +153,7 @@ export class MyGridComponent implements OnInit {
 
   queryParams: any = {};
 
-  @Input() params: CrudParams= {} as any; 
+  @Input() params: CrudParams = {} as any;
 
   @Input() prefix: string = "1";
 
@@ -149,27 +166,28 @@ export class MyGridComponent implements OnInit {
   constructor(private baseService: BaseService,
     public dialog: MatDialog,
     private router: Router,
-    public authService: AuthService) {        
+    public authService: AuthService) {
   }
 
   ngOnInit(): void {
     // this.displayedCols = ['front', 'back'];
 
-    
+
 
     this.initializeSorting();
     this.initializePaging();
-    this.initializeFilters();    
+    this.initializeFilters();
 
-    if(this.entities.length == 0)
+    if (this.entities.length == 0)
       this.getDataFromBackend();
 
-    for(var fc of this.params.fieldConfigs)
-    {
-      if(fc.showOnList == true)
+    for (var fc of this.params.fieldConfigs) {
+      if (fc.showOnList == true)
         this.displayedCols.push(fc.name);
     }
     this.displayedCols.push("operations");
+
+
   }
 
   reload(): void {
@@ -194,15 +212,15 @@ export class MyGridComponent implements OnInit {
     // this.baseService.setSearchMethod(this.params.searchMethod);
   }
 
-  private getDataFromBackend(): void { 
+  private getDataFromBackend(): void {
     this.initDataService();
     this.baseService.search(this.filters, this.paging, this.sorting).subscribe(
       (result: any) => {
-        this.entities = result.body;        
-        this.paginator.length = +result.headers.get(this.params.totalPagesHeaderName);	      
-    }
+        this.entities = result.body;
+        this.paginator.length = +result.headers.get(this.params.totalPagesHeaderName);
+      }
     );
-    
+
   }
 
   // operationEnabled(operation: Operation): boolean {
@@ -211,8 +229,8 @@ export class MyGridComponent implements OnInit {
 
   // showDetails(id: any): void{
   //   alert('implement!');
-    // this.currentEntityId = id;
-    // this.changePanel(PanelType.DETAILS);
+  // this.currentEntityId = id;
+  // this.changePanel(PanelType.DETAILS);
   // }
 
   // changePanel(panel: PanelType) {
@@ -231,67 +249,64 @@ export class MyGridComponent implements OnInit {
   //   this.changePanel(PanelType.CREATE);
   // }
 
-  delete(id: any): void 
-	{	
-		this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-			disableClose: false
-		});
-		this.dialogRef.componentInstance.confirmMessage = "آیا عملیات حذف را تایید می کنید؟"
+  delete(id: any): void {
+    this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: false
+    });
+    this.dialogRef.componentInstance.confirmMessage = "آیا عملیات حذف را تایید می کنید؟"
 
-		this.dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
         this.initDataService();
         this.baseService.remove(id).subscribe(
           (result: any) => this.reload()
         );
       }
-			this.dialogRef = {} as any;
-		});
-			
+      this.dialogRef = {} as any;
+    });
+
   }
-  
+
   applySorting(ev: any): void {
-		if(ev.direction == '')
-		{
-			this.sorting = null;
-		}
-		else
-		{
-			this.sorting = {
-				sortField: ev.active,
-				ascending: (ev.direction == 'asc' ? true : false)
-			};
-		}
+    if (ev.direction == '') {
+      this.sorting = null;
+    }
+    else {
+      this.sorting = {
+        sortField: ev.active,
+        ascending: (ev.direction == 'asc' ? true : false)
+      };
+    }
 
     this.setToLocalStorage('sorting', this.sorting);
 
-		if(this.onInitSort == true)  //to prevent calling backend twice on page load when setting sort fields
-			this.onInitSort = false;
-		else
-			this.getDataFromBackend();
+    if (this.onInitSort == true)  //to prevent calling backend twice on page load when setting sort fields
+      this.onInitSort = false;
+    else
+      this.getDataFromBackend();
   }
-  
+
   applyPaging(pageEvent: PageEvent): void {
-	
-		this.paging['pageNumber'] = pageEvent.pageIndex;
-		this.paging['pageSize'] = pageEvent.pageSize;
-		
+
+    this.paging['pageNumber'] = pageEvent.pageIndex;
+    this.paging['pageSize'] = pageEvent.pageSize;
+
     this.setToLocalStorage("paging", this.paging);
-		
-		this.getDataFromBackend();
-	}
+
+    this.getDataFromBackend();
+  }
 
   get(element: any, fieldConf: any) {
     let names = fieldConf.name.split('.');
-    if(names.length == 1)
+    if (names.length == 1)
       return element[names[0]];
-    if(names.length == 2) {
-      if(element[names[0]] == null)
+    if (names.length == 2) {
+      if (element[names[0]] == null)
         return null;
       return element[names[0]][names[1]];
     }
-    if(names.length == 3) {
-      if(element[names[0]] == null || element[names[0]][names[1]] == null)
+    if (names.length == 3) {
+      if (element[names[0]] == null || element[names[0]][names[1]] == null)
         return null;
       return element[names[0]][names[1]][names[2]];
     }
@@ -308,8 +323,7 @@ export class MyGridComponent implements OnInit {
 
   private initializeSorting() {
     this.sorting = this.getFromLocalStorage("sorting");
-    if(this.sorting == null)
-    {
+    if (this.sorting == null) {
       this.sort = {
         direction: '',
         active: ''
@@ -325,8 +339,7 @@ export class MyGridComponent implements OnInit {
 
   private initializePaging() {
     this.paging = this.getFromLocalStorage("paging");
-    if(this.paging == null)
-    {
+    if (this.paging == null) {
       this.paging = {};
       return;
     }
@@ -334,15 +347,16 @@ export class MyGridComponent implements OnInit {
 
   private initializeFilters() {
     this.filters = this.getFromLocalStorage("filters");
-    if(this.filters == null)
+    if (this.filters == null)
       this.filters = {};
 
     this.applyHiddenFilters();
+    this.makeSelectedFilters();
   }
 
   private applyHiddenFilters() {
-    for(let filterConf of this.params.filterConfigs) {
-      if(filterConf.type == FilterType.HIDDEN) 
+    for (let filterConf of this.params.filterConfigs) {
+      if (filterConf.type == FilterType.HIDDEN)
         this.filters[filterConf.name] = filterConf.value;
     }
   }
@@ -353,17 +367,68 @@ export class MyGridComponent implements OnInit {
     dialogRef.componentInstance.filterConfig = this.params.filterConfigs;
     dialogRef.afterClosed().subscribe(
       (result) => {
-        if(!result)
-          return;        
+        if (!result)
+          return;
         this.filters = result;
         this.applyHiddenFilters();
         this.reloadFromPageZero();
+        this.makeSelectedFilters();
+        // this.selectedFilters = result.selectedFilters;
       }
     )
   }
 
 
-  
+  removeFilter(filter: SelectedFilter) {
+    this.filters[filter.name] = null;
+    this.selectedFilters.splice(this.selectedFilters.indexOf(filter), 1);
+    this.applyHiddenFilters();
+    this.reloadFromPageZero();
+  }
+
+  private makeSelectedFilters(): void {
+    // let selectedFilters: SelectedFilter[] = [];
+    this.selectedFilters = [];
+    for (let fc of this.params.filterConfigs) {
+      if (this.filters[fc.name] != null && this.filters[fc.name] != '') {
+        this.selectedFilters.push({
+          label: fc.label,
+          value: this.getFilterDisplayValue(fc, this.filters[fc.name]),
+          name: fc.name
+        });
+      }
+    }
+    // return selectedFilters;
+  }
+
+  private getFilterDisplayValue(fc: FilterConfig, value: any): string {
+    if (fc.type == FilterType.DATE_RANGE) {
+      console.log(value);
+      let startStr = value.start ? `${value.start.year}/${value.start.month}/${value.start.day}` : '';
+      let endStr = value.end ? `${value.end.year}/${value.end.month}/${value.end.day}` : '';
+      return `${startStr} - ${endStr}`;
+    } else if (fc.type == FilterType.DATE) {
+      return value.year + '/' + value.month + '/' + value.day;
+    } else if (fc.type == FilterType.TOGGLE) {
+      return value ? 'بله' : 'خیر';
+    } else if (fc.type == FilterType.SELECT) {
+      // let option = fc.values?.find(o => o.value == value);
+      // return option ? option.label : value;
+      return value;
+    } else if (fc.type == FilterType.MULTI_SELECT) {
+      let labels: string[] = [];
+      for (let val of value) {
+        // let option = fc.values?.find(o => o.value == val); 
+        // if(option)
+        //  labels.push(option.label);
+        labels.push(val);
+      }
+      return labels.join(', ');
+    } else {
+      return value;
+    }
+  }
+
 }
 
 
