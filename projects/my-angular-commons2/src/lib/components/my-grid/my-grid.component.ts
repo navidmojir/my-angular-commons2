@@ -119,7 +119,9 @@ export class SearchFiltersDialog implements OnInit {
     MatDividerModule,
     MatButtonModule,
     MatDialogModule,
-    MatChipsModule
+    MatChipsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [
     { provide: MatPaginatorIntl, useValue: getPersianPaginatorIntl() }
@@ -203,6 +205,16 @@ export class MyGridComponent implements OnInit {
     this.paging['pageNumber'] = 0;
     this.paginator.pageIndex = 0;
     this.reload();
+  }
+
+  applyQuickSearch(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+
+    if (!this.filters)
+      this.filters = {};
+
+    this.filters.quickSearch = value;
+    this.reloadFromPageZero();
   }
 
   //removed from ng init to fix bug when using two components in same page

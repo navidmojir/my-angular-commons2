@@ -1,11 +1,18 @@
 <div [dir]="params.rtl ? 'rtl' : 'ltr'">
     <div class="toolbar" *ngIf="params.showToolbar">
-        <button mat-raised-button (click)="reload()">{{params.labels.refresh}}</button>
-        <button mat-raised-button (click)="openSearchDialog()">{{params.labels.search}}</button>
+        <div class="toolbar-actions">
+            <button mat-raised-button (click)="reload()">{{params.labels.refresh}}</button>
+            <button mat-raised-button (click)="openSearchDialog()">{{params.labels.search}}</button>
 
-        <ng-container *ngFor="let customAction of params.customGeneralActions">
-            <button mat-raised-button (click)="customAction.onClick()">{{customAction.title}}</button>
-        </ng-container>
+            <ng-container *ngFor="let customAction of params.customGeneralActions">
+                <button mat-raised-button (click)="customAction.onClick()">{{customAction.title}}</button>
+            </ng-container>
+        </div>
+
+        <mat-form-field class="quick-search" appearance="outline">
+            <mat-label>جستجوی سریع</mat-label>
+            <input matInput [value]="filters?.quickSearch || ''" (input)="applyQuickSearch($event)" />
+        </mat-form-field>
     </div>
 
     <div class="selected-filters" *ngIf="selectedFilters.length > 0">

@@ -6,10 +6,18 @@ table {
     padding: 10px;
     background-color: rgb(250, 249, 253);
     border-radius: 15px 15px 0px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
 }
 
-.toolbar button {
+.toolbar-actions button {
     margin-left: 10px;
+}
+
+.quick-search {
+    width: 250px;
 }
 
 .record-operations button{
