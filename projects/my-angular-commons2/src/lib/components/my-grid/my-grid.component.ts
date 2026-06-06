@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -23,6 +23,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { CalendarDate } from '@internationalized/date';
 import { MatChipsModule } from '@angular/material/chips';
+import { firstValueFrom } from 'rxjs';
 
 export interface SelectedFilter {
   label: string;
@@ -85,7 +86,7 @@ export class SearchFiltersDialog implements OnInit {
 
 
   applyFilter() {
-    // console.log(this.filters.value);
+    console.log(this.filters.value);
 
     this.dialogRef.close(this.filters.value
       /*, selectedFilters: this.makeSelectedFilters() }*/);
@@ -166,7 +167,8 @@ export class MyGridComponent implements OnInit {
   constructor(private baseService: BaseService,
     public dialog: MatDialog,
     private router: Router,
-    public authService: AuthService) {
+    public authService: AuthService,
+    private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -386,44 +388,60 @@ export class MyGridComponent implements OnInit {
     this.reloadFromPageZero();
   }
 
-  private makeSelectedFilters(): void {
+  private async makeSelectedFilters(): Promise<void> {
     // let selectedFilters: SelectedFilter[] = [];
     this.selectedFilters = [];
     for (let fc of this.params.filterConfigs) {
       if (this.filters[fc.name] != null && this.filters[fc.name] != '') {
+        const displayValue = await this.getFilterDisplayValue(fc, this.filters[fc.name]);
         this.selectedFilters.push({
           label: fc.label,
-          value: this.getFilterDisplayValue(fc, this.filters[fc.name]),
+          value: displayValue,
           name: fc.name
         });
       }
     }
+    this.cdr.markForCheck();
     // return selectedFilters;
   }
 
-  private getFilterDisplayValue(fc: FilterConfig, value: any): string {
+  private async getFilterDisplayValue(fc: FilterConfig, value: any): Promise<string> {
     if (fc.type == FilterType.DATE_RANGE) {
-      console.log(value);
+      if (!value || (!value.start && !value.end)) {
+        return '';
+      }
       let startStr = value.start ? `${value.start.year}/${value.start.month}/${value.start.day}` : '';
       let endStr = value.end ? `${value.end.year}/${value.end.month}/${value.end.day}` : '';
-      return `${startStr} - ${endStr}`;
+      const result = `${startStr} - ${endStr}`.trim();
+      return result === '-' ? '' : result;
     } else if (fc.type == FilterType.DATE) {
+      if (!value) {
+        return '';
+      }
       return value.year + '/' + value.month + '/' + value.day;
     } else if (fc.type == FilterType.TOGGLE) {
       return value ? 'بله' : 'خیر';
     } else if (fc.type == FilterType.SELECT) {
-      // let option = fc.values?.find(o => o.value == value);
-      // return option ? option.label : value;
+      if (fc.values) {
+        const options = await firstValueFrom(fc.values);
+        const option = options?.find(o => o.key === value);
+        return option ? option.value : value;
+      }
       return value;
     } else if (fc.type == FilterType.MULTI_SELECT) {
-      let labels: string[] = [];
-      for (let val of value) {
-        // let option = fc.values?.find(o => o.value == val); 
-        // if(option)
-        //  labels.push(option.label);
-        labels.push(val);
+      if (fc.values) {
+        const options = await firstValueFrom(fc.values);
+        const labels: string[] = [];
+        for (let val of value) {
+          const option = options?.find(o => o.key === val);
+          if (option)
+            labels.push(option.value);
+          else
+            labels.push(val);
+        }
+        return labels.join(', ');
       }
-      return labels.join(', ');
+      return Array.isArray(value) ? value.join(', ') : value;
     } else {
       return value;
     }
