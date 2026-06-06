@@ -394,6 +394,9 @@ export class MyGridComponent implements OnInit {
     for (let fc of this.params.filterConfigs) {
       if (this.filters[fc.name] != null && this.filters[fc.name] != '') {
         const displayValue = await this.getFilterDisplayValue(fc, this.filters[fc.name]);
+        if (displayValue == null || displayValue === '') {
+          continue;
+        }
         this.selectedFilters.push({
           label: fc.label,
           value: displayValue,
