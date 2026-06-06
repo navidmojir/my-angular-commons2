@@ -20,6 +20,21 @@ table {
     width: 250px;
 }
 
+.quick-search ::ng-deep .mat-mdc-form-field-infix {
+    min-height: 36px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.quick-search ::ng-deep .mat-mdc-text-field-wrapper {
+    height: 36px;
+}
+
+.quick-search ::ng-deep .mat-mdc-form-field-flex {
+    height: 36px;
+    align-items: center;
+}
+
 .record-operations button{
     margin-left: 10px;
 }

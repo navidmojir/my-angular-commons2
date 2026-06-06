@@ -9,9 +9,9 @@
             </ng-container>
         </div>
 
-        <mat-form-field class="quick-search" appearance="outline">
-            <mat-label>جستجوی سریع</mat-label>
-            <input matInput [value]="filters?.quickSearch || ''" (input)="applyQuickSearch($event)" />
+        <mat-form-field class="quick-search" appearance="outline" subscriptSizing="dynamic">
+            <input matInput placeholder="جستجوی سریع" [value]="filters?.quickSearch || ''"
+                (input)="applyQuickSearch($event)" />
         </mat-form-field>
     </div>
 
