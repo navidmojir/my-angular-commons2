@@ -15,7 +15,7 @@ export class BaseService {
     private resourceName: String = "resources";
     private searchMethod = "/search";
 
-    private httpClient: HttpClient = inject(HttpClient);
+    protected httpClient: HttpClient = inject(HttpClient);
     private errorMessageHandlerService: IErrorMessageHandler = inject(DefaultErrorMessageHandler);
     
 
@@ -51,8 +51,16 @@ export class BaseService {
         );
     }
 
-    public get(path: string, options?: any) {
-        return this.httpClient.get(this.baseUrl + path, options).pipe(
+    // public get(path: string, options?: any) {
+    //     return this.get(path, options);
+    // }
+
+    public get(path: string, options?: any, handleError = true) {
+        let req = this.httpClient.get(this.baseUrl + path, options);
+        if(!handleError)
+            return req;
+
+        return req.pipe(
             catchError((error) => this.handleError(error))
       );
     }
