@@ -23,7 +23,6 @@ export class AuthService {
 
     init(config: any): Promise<boolean> {
         try {
-            console.log("begin init auth service");
             this.keycloakConfig = config;
             this.keycloak = new Keycloak(config);
             return this.keycloak.init({
@@ -67,7 +66,6 @@ export class AuthService {
     }
 
     loadPermissions(): Promise<unknown> {
-        console.log("starting to load permissions");
         if(this.keycloak == undefined)
             throw "Keycloak is not initialized";
         let authorization = new KeycloakAuthorization(this.keycloak);
@@ -79,20 +77,16 @@ export class AuthService {
     }
 
     private loadResourcePermissions(authorization: KeycloakAuthorization, resourceClientId: string): Promise<unknown> {
-        console.log("starting to load permissions for resource with client id " + resourceClientId);
         return new Promise((resolve, reject) => {
             authorization.entitlement(resourceClientId).then(
                 (rpt) => {
                     this.loadRpt(rpt);
                     resolve(true);
-                    console.log("loading permissions for resource with client id " + resourceClientId + " was succeeded")
                 },
                 ()=> {
-                    console.log("denied when loading permissions");
                     reject(false);
                 },
                 () => {
-                    console.log("error occured when loading permissions");
                     reject(false);
                 }
             );
@@ -145,8 +139,6 @@ export class AuthService {
     
     const now = Math.floor(Date.now() / 1000); // current time in seconds
     const exp = this.keycloak?.tokenParsed?.exp;    // expiration time
-    console.log("now in seconds: ", now);
-    console.log("token exp time in seconds: exp", exp);
     return exp ? exp - now : 0;
   }
 }

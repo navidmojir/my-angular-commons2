@@ -12,10 +12,8 @@ export class AppInitializerService {
             if(result) {
                 // let tokenRefreshTimeout = (authService.getTokenExpiresIn() - 10)*1000;
                 let tokenRefreshTimeout = 300*1000;
-                console.log("Attempting to set interval for refreshing token with timeout ", tokenRefreshTimeout);
                 setInterval(()=>{
-                    console.log("Trying to refresh access token");
-                    authService.getKeycloak().updateToken(10).then((result: any) => console.log("Access token updated with result " + result + " at " + new Date()));
+                    authService.getKeycloak().updateToken(10);
                 }, tokenRefreshTimeout);                
                 return authService.loadPermissions();
                 

@@ -86,8 +86,6 @@ export class SearchFiltersDialog implements OnInit {
 
 
   applyFilter() {
-    console.log(this.filters.value);
-
     this.dialogRef.close(this.filters.value
       /*, selectedFilters: this.makeSelectedFilters() }*/);
 
