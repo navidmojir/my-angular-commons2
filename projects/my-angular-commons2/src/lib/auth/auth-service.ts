@@ -135,6 +135,14 @@ export class AuthService {
     return false;
   }
 
+  hasPermissions(perms: any[]) {
+    for(let perm of perms) {
+      if(!this.hasPermission(perm.url, perm.scope))        
+          return false;
+    }
+    return true;
+  }
+
   public getTokenExpiresIn(): any {
     
     const now = Math.floor(Date.now() / 1000); // current time in seconds
