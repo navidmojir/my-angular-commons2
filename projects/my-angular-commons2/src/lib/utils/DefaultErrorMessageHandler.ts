@@ -46,35 +46,35 @@ export class DefaultErrorMessageHandler implements IErrorMessageHandler {
             
         if(httpErrorResponse == undefined || httpErrorResponse.error == undefined 
                 || httpErrorResponse.error['error'] == undefined)
-            return {message: 'خطای نامشخص', 
+            return {message: 'خطای نامشخص رخ داده است. لطفا به منظور پیگیری با مدیر سیستم تماس حاصل نمایید.', 
                 details:'Response body received from backend is empty. So detecting error is impossible. HTTP status code is ' + httpErrorResponse.status};
 
-            let message = '';
-        let errorEnum = httpErrorResponse.error.error;
-        switch(errorEnum)
-        {
-        case 'INTERNAL_ERROR':
-        case 'Internal Server Error':
-            message =  'خطای داخلی در سرویس رخ داده است';
-            break;
-        case 'ENTITY_NOT_FOUND':
-            message = 'موجودیت درخواست شده در پایگاه داده یافت نشد';
-            break;
-        case 'Not Found': //spring boot
-            message = 'یافت نشد';
-            break;
-        case 'INVALID_INPUT':
-            message = 'داده های ورودی معتبر نیست'; 
-            break;
-        default:
-            if(this.errorTranslator != null)
-                message = this.errorTranslator.translate(errorEnum);
-            else
-                message = 'ترجمه کد خطا یافت نشد. کد خطا: ' + httpErrorResponse.error.error;
-            break;
-        }
+        // let message = '';
+        // let errorEnum = httpErrorResponse.error.error;
+        // switch(errorEnum)
+        // {
+        // case 'INTERNAL_ERROR':
+        // case 'Internal Server Error':
+        //     message =  'خطای داخلی در سرویس رخ داده است';
+        //     break;
+        // case 'ENTITY_NOT_FOUND':
+        //     message = 'موجودیت درخواست شده در پایگاه داده یافت نشد';
+        //     break;
+        // case 'Not Found': //spring boot
+        //     message = 'یافت نشد';
+        //     break;
+        // case 'INVALID_INPUT':
+        //     message = 'داده های ورودی معتبر نیست'; 
+        //     break;
+        // default:
+        //     if(this.errorTranslator != null)
+        //         message = this.errorTranslator.translate(errorEnum);
+        //     else
+        //         message = 'ترجمه کد خطا یافت نشد. کد خطا: ' + httpErrorResponse.error.error;
+        //     break;
+        // }
         
-        return {message: message, details: httpErrorResponse.error.message};
+        return {message: httpErrorResponse.error.message, details: ''};
     }
 
     public setErrorTranslator(errorTranslator: IErrorTranslator) {
