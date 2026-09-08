@@ -460,6 +460,11 @@ export class MyGridComponent implements OnInit {
     }
   }
 
+  clearQuickSearch(input: HTMLInputElement): void {
+    input.value = '';
+    this.applyQuickSearch({ target: input } as any);
+  }
+
 }
 
 

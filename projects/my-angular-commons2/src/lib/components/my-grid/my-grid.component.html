@@ -10,8 +10,16 @@
         </div>
 
         <mat-form-field class="quick-search" appearance="outline" subscriptSizing="dynamic">
-            <input matInput placeholder="جستجوی سریع" [value]="filters?.quickSearch || ''"
+
+            <input #quickSearchInput matInput placeholder="جستجوی سریع" [value]="filters?.quickSearch || ''"
                 (keyup.enter)="applyQuickSearch($event)" />
+
+            <button *ngIf="quickSearchInput.value" mat-icon-button matSuffix type="button" aria-label="پاک کردن جستجو"
+                matTooltip="پاک کردن" (click)="clearQuickSearch(quickSearchInput)">
+
+                <mat-icon>close</mat-icon>
+            </button>
+
         </mat-form-field>
     </div>
 
@@ -23,7 +31,7 @@
                 <mat-icon matChipRemove (click)="removeFilter(filter)">cancel</mat-icon>
             </mat-chip>
             }
-        </mat-chip-set>        
+        </mat-chip-set>
 
     </div>
 
