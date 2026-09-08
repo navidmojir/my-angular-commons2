@@ -11,7 +11,7 @@
 
         <mat-form-field class="quick-search" appearance="outline" subscriptSizing="dynamic">
             <input matInput placeholder="جستجوی سریع" [value]="filters?.quickSearch || ''"
-                (input)="applyQuickSearch($event)" />
+                (keyup.enter)="applyQuickSearch($event)" />
         </mat-form-field>
     </div>
 
