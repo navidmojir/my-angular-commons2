@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -132,6 +132,8 @@ export class MyGridComponent implements OnInit {
 
   @Input() filters: any;
 
+  @Output() filtersChanged = new EventEmitter();
+
   showDetailsButton = true;
   showDeleteButton = false;
 
@@ -196,6 +198,7 @@ export class MyGridComponent implements OnInit {
     this.setToLocalStorage('sorting', this.sorting);
     this.setToLocalStorage('paging', this.paging);
     this.setToLocalStorage('filters', this.filters);
+    this.filtersChanged.emit(this.filters);
     this.getDataFromBackend();
   }
 
@@ -364,6 +367,7 @@ export class MyGridComponent implements OnInit {
 
     this.applyHiddenFilters();
     this.makeSelectedFilters();
+    this.filtersChanged.emit(this.filters);
   }
 
   private applyHiddenFilters() {
@@ -388,6 +392,24 @@ export class MyGridComponent implements OnInit {
         // this.selectedFilters = result.selectedFilters;
       }
     )
+  }
+
+  // resetFilters() {
+  //   this.filters = {};
+  //   this.applyHiddenFilters();
+  //   this.reloadFromPageZero();
+  //   this.makeSelectedFilters();
+  // }
+
+  public resetFilters() {
+    this.filters = {};
+
+    localStorage.setItem("filters", "{}");
+
+    let paging = this.getFromLocalStorage("paging");
+    if(paging)
+      paging['pageNumber'] = 0;
+    this.setToLocalStorage("paging", paging);
   }
 
 
